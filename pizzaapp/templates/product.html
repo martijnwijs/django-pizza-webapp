@@ -1,0 +1,134 @@
+<html>
+
+<head>
+    <title>yo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+
+<body>
+    <ul>
+        <li>{{ Product }} </li>
+    </ul>
+
+    <h1>Hello, {{ user.first_name }}</h1>
+    <ul>
+        <li>Currently logged in as: {{ user.username }}</li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+
+    {% if Product.type.name == "Pizza" %}
+    <!-- order pizza-->
+    <form action="{% url 'product' Product.type Product.name Product.size %}" method="post">
+        {% csrf_token %}
+        size:
+        {% for size in Sizes %}
+        <input type="radio" name="size" value="{{ size }}" checked> {{ size }}
+        {% endfor %}
+        <br>
+        base:
+        {% for Name in Names %}
+        {% if Name.type.name == "Pizza" %}
+        <input type="radio" name="name" value="{{ Name }}" checked> {{ Name }}
+        {% endif %}
+        {% endfor %}
+        <br>
+        toppings (max 4):
+
+        {% for topping in Toppings %}
+        <input class="single-checkbox" type="checkbox" name="toppings" value="{{ topping }}"> {{ topping }} <br>
+        {% endfor %}
+
+        <input name="type" type="submit" value="{{ Product.type }}">
+    </form>
+    {% endif %}
+    {% if Product.type.name == "Sub" %}
+    <!-- order sub-->
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+        size:
+        {% for size in Sizes %}
+        <input type="radio" name="size" value="{{ size }}" checked> {{ size }}
+        {% endfor %}
+        <br>
+
+        name:
+        <select id="subtype">
+            {% for Name in Names %}
+            {% if Name.type.name == "Sub" %}
+            <option value="{{ Name }}">{{ Name }}</option>
+            {% endif %}
+            {% endfor %}
+        </select><br>
+
+        toppings:
+        <!-- no objects yet!! do the same with linked lists-->
+        {% for topping in Toppings %}
+        {% if topping.type.name == "Sub" %}
+        <input class="single-checkbox" type="checkbox" name="toppings" value="{{ topping }}"> {{ topping }} (+ $0,50) <br>
+        {% endif %}
+        {% endfor %}
+    
+        extra cheese:
+        <input class="single-checkbox" type="checkbox" name="extracheese" value=True> <br>
+
+        <input name="type" type="submit" value="{{ Product.type }}">
+    </form>
+    {% endif %}
+
+    {% if Product.type.name == "Pasta" %}
+    <!-- order pasta-->
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+        name sdf:
+        <select name="name">
+            {% for Name in Names %}
+            {% if Name.type.name == "Pasta" %}
+
+            <option value="{{ Name }}">{{ Name }}</option>
+            {% endif %}
+            {% endfor %}
+        </select><br>
+        <input name="type" type="submit" value="{{ Product.type }}">
+    </form>
+
+    {% endif %}
+    <!-- order salad-->
+    {% if Product.type.name == "Salad" %}
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+        name sdf:
+        <select name ="name">
+            {% for Name in Names %}
+            {% if Name.type.name == "Salad" %}
+
+            <option value="{{ Name }}">{{ Name }}</option>
+            {% endif %}
+            {% endfor %}
+        </select><br>
+        <input name="type" type="submit" value="{{ Product.type }}">
+    </form>
+    {% endif %}
+    <!-- order plate-->
+    {% if Product.type.name == "Dinner Platter" %}
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+        name sdf:
+        <select name="name">
+            {% for Name in Names %}
+            {% if Name.type.name == "Dinner Plater" %}
+            <option value="{{ Name }}">{{ Name }}</option>
+            {% endif %}
+            {% endfor %}
+        </select><br>
+        size:
+        {% for size in Sizes %}
+        <input type="radio" name="size" value="{{ size }}" checked> {{ size }}
+        {% endfor %}
+        <br>
+        <input name="type" type="submit" value="{{ Product.type }}">
+    </form>
+    {% endif %}
+</body>
+
+</html>

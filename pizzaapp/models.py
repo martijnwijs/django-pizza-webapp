@@ -17,7 +17,7 @@ class Name(models.Model):
 
 class Toppings(models.Model):
     name =  models.CharField(max_length=25)
-
+    type = models.ForeignKey(Type, blank=True, null=True, on_delete=models.CASCADE, related_name="Typetopping")
     def __str__(self):
         return self.name
 
@@ -60,7 +60,7 @@ class Menu(models.Model):
 class Shop_cart(models.Model):
     #user object
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="User")
-    #pizza objects
+    #item objects
     items = models.ManyToManyField(Item, blank=True, related_name="ItemsPizza")
     #change to string
     

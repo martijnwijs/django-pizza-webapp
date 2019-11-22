@@ -1,0 +1,138 @@
+<html>
+
+<head>
+    <title>yo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+
+<body>
+
+
+
+    <ul>
+        <li>
+            <h1>Pizza</h1>
+        </li>
+        {% for item in Items  %}
+        {% if item.type.name == "Pizza" %}
+        <li> <a href="{% url 'product' item.type item.name item.size %}">{{ item.type }} {{ item.size }}</a></li>
+        
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+    <ul>
+        <li>
+            <h1>Sub</h1>
+        </li>
+        {% for item in Items  %}
+        {% if item.type.name == "Sub" %}
+        <li> {{item.name }} {{ item.size }}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+    <ul>
+        <li>
+            <h1>Pasta</h1>
+        </li>
+        {% for item in Items  %}
+        {% if item.type.name == "Pasta" %}
+        <li> {{item.name }} {{ item.size }}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <ul>
+        <li>
+            <h1>Salads</h1>
+        </li>
+        {% for item in Items  %}
+        {% if item.type.name == "Salad" %}
+        <li> {{item.name }} {{ item.size }}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <ul>
+        <li>
+            <h1>Dinner platters</h1>
+        </li>
+        {% for item in Items  %}
+        {% if item.type.name == "Dinner Platter" %}
+        <li> {{item.name }} {{ item.size }}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+    <h1>Hello, {{ user.first_name }}</h1>
+    <ul>
+        <li>Currently logged in as: {{ user.username }}</li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+
+    <!-- order-->
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+        size:
+        {% for size in Sizes %}
+        <input type="radio" name="size" value="{{ size }}" checked> {{ size }}
+        {% endfor %}
+        <br>
+        base:
+        {% for Name in Names %}
+        {% if Name.name == 'Regular' or Name.name == 'Italian' %}
+        <input type="radio" name="base" value="{{ base }}" checked> {{ Name }}
+        {% endif %}
+        {% endfor %}
+        <br>
+        toppings (max 4):
+
+        {% for topping in Toppings %}
+        <input class="single-checkbox" type="checkbox" name="toppings" value="{{ topping }}"> {{ topping }} <br>
+        {% endfor %}
+
+        <input type="submit" value="add to shopping cart">
+    </form>
+
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+        Type:
+        <select id = "subtype">
+        {% for item in Items %}
+        {% if item.type.name == 'sub' %}
+        <option value = "{{ item.type }}">{{ item.name }}</option>
+        {% endif %}
+        {% endfor %}
+        </select>
+
+        <br>
+        base:
+        {% for Name in Names %}
+        {% if Name.name == 'Regular' or Name.name == 'Italian' %}
+        <input type="radio" name="base" value="{{ base }}" checked> {{ Name }}
+        {% endif %}
+        {% endfor %}
+        <br>
+        toppings (max 4):
+
+        {% for topping in Toppings %}
+        <input class="single-checkbox" type="checkbox" name="toppings" value="{{ topping }}"> {{ topping }} <br>
+        {% endfor %}
+
+        <input type="submit" value="add to shopping cart">
+    </form>
+    <!-- twee vragen: waarom jquery en waarom pakt hij die twee erboven mee???-->
+    <script>
+        var limit = 6;
+        $('input.single-checkbox').on('change', function (evt) {
+            if ($(this).siblings(':checked').length >= limit) {
+                this.checked = false;
+            }
+        });
+    </script>
+
+    <a href="{% url 'shoppingcart' %}">shopping cart</a></li>
+
+</body>
+
+</html>

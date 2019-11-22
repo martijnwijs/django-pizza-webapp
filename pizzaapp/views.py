@@ -44,6 +44,61 @@ def product(request, type, name, size):
         return render(request, "product.html", context)
 
     if request.method == 'POST':
+        #retrieve data 
+        type = Type.objects.get(name=request.POST["type"])
+        name = Name.objects.get(name=request.POST["name"])
+        size = Size.objects.get(name=request.POST["size"])
+        extracheese = request.POST.get("extracheese", False)
+        
+        # topping as a list
+        toppings = request.POST.getlist("toppings")
+
+       
+         
+        
+        # new item object
+        item = Item()
+        #item.type = Type.objects.get(name=base)
+        item.size = size
+        
+        # if pizza add no of toppings for pricecheck, otherwise not
+        if type.name == "Pizza":
+            pricecheck = Menu.objects.get(size=size, type=type, no_toppings=len(toppings))
+            item.price = 0
+        else:
+            pricecheck = Menu.objects.get(size=size, type=type)
+            item.price = len(toppings) * 0,5
+        item.price += pricecheck.price
+        # now add the cheese
+        if extracheese:
+            item.price += 0,5
+
+        
+        #pizza.price = pricecheck.price 
+    # plus message
+        #backend price check
+        #################### use try exept to catch up otherbugs
+        #first save to add toppings
+        item.save()
+        for topping in toppings:
+            item.toppings.add(Toppings.objects.get(name=topping))
+        # save again
+        item.save()
+
+        # add pizza object to users shop cart
+
+        #get users shop cart  + !!!!error handling!!!
+        shop_cart = Shop_cart.objects.get(user=request.user)
+        
+        #add the pizza items
+        shop_cart.items.add(item)
+        shop_cart.save()
+        
+        return HttpResponseRedirect(reverse("failure"))
+         
+# function name to be found in urls.py, 
+#httpresponseredirect(reverse) is a way to redirect to another adres
+# render(template) to render
         
 def shoppingcart(request):
 
@@ -58,7 +113,7 @@ def shoppingcart(request):
         #for seg in cart.items_pizza.all():
             #items.append(seg)
         #context = {"items": items}
-        context2 = {"items": cart.items_pizza.all()}
+        context2 = {"items": cart.items.all()}
         return render(request, "shoppingcart.html", context2)
     # place order and delete content
     if request.method == 'POST':
@@ -106,47 +161,6 @@ def index(request):
     
     if request.method == 'GET':
         return render(request, "index.html", context)
-
-    if request.method == 'POST':
-        #retrieve data
-        size = request.POST["size"]
-        base = request.POST["base"]
-        toppings = request.POST.getlist('toppings')
-        #print(base.name)
-        #user.first_name
-        #add pizza objects to table
-        pizza = Pizza()
-        pizza.base = Base.objects.get(name=base)
-        pizza.size = Size.objects.get(name=size)
-        
-
-        pricecheck = Pizzamenu.objects.get(size=pizza.size, base=pizza.base, no_toppings=len(toppings))
-        pizza.price = pricecheck.price
-        #pizza.price = pricecheck.price 
-    # plus message
-        #backend price check
-        #################### use try exept to catch up otherbugs
-        #first save to add toppings
-        pizza.save()
-        for topping in toppings:
-            pizza.toppings.add(Toppings.objects.get(name=topping))
-        # save again
-        pizza.save()
-
-        # add pizza object to users shop cart
-
-        #get users shop cart  + !!!!error handling!!!
-        shop_cart = Shop_cart.objects.get(user=request.user)
-        
-        #add the pizza items
-        shop_cart.items_pizza.add(pizza)
-        shop_cart.save()
-        
-        return render(request, "index.html", context)
-         
-# function name to be found in urls.py, 
-#httpresponseredirect(reverse) is a way to redirect to another adres
-# render(template) to render
 
 def login_view(request):
     username = request.POST["username"]
