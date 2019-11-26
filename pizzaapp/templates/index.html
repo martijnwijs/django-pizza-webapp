@@ -9,18 +9,31 @@
 <body>
 
 
-
-    <ul>
-        <li>
-            <h1>Pizza</h1>
-        </li>
+        <h1>Pizza</h1>
+    <table>
+        <tr>
+            <th>type</th>
+            <th>Small</th>
+            <th>Large</th>
+        </tr>
         {% for item in Items  %}
-        {% if item.type.name == "Pizza" %}
-        <li> <a href="{% url 'product' item.type item.name item.size %}">{{ item.type }} {{ item.size }}</a></li>
+        {% if item.type.name == "Pizza" %} 
+        <tr>
+        {% if item.size.name == "Small" %}
+        
+        <td>{{ item.name.name }} </td>
+        
+        <td> <a href="{% url 'product' item.type item.name item.size %}"> {{item.price}} </a> </td>
+        {% endif %}
+        {%if item.size.name == "Large" %}
+        <td> <a href="{% url 'product' item.type item.name item.size %}">{{item.price}}}</a> </td>
+        </tr>
+        {% endif %}
         
         {% endif %}
+    
         {% endfor %}
-    </ul>
+    </table>
 
     <ul>
         <li>
@@ -28,7 +41,7 @@
         </li>
         {% for item in Items  %}
         {% if item.type.name == "Sub" %}
-        <li> {{item.name }} {{ item.size }}</li>
+        <li> <a href="{% url 'product' item.type item.name item.size %}">{{ item.type }} {{ item.size }}</a></li>
         {% endif %}
         {% endfor %}
     </ul>
@@ -39,7 +52,7 @@
         </li>
         {% for item in Items  %}
         {% if item.type.name == "Pasta" %}
-        <li> {{item.name }} {{ item.size }}</li>
+        <li> <a href="{% url 'product' item.type item.name None %}">{{ item.type }} {{ item.size }}</a></li>
         {% endif %}
         {% endfor %}
     </ul>
