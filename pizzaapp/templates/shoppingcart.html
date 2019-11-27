@@ -1,0 +1,29 @@
+{% extends "template.html" %}
+{% block body %}
+    {% if items.count != 0 %}
+    <ul>
+        {% for item in items%}
+        <form action="{% url 'shoppingcart' %}" method="post">
+                    {% csrf_token %}
+        <li>
+            {{ item }} <input type="submit" name = "{{ item }}" value="delete"> <br>
+        </li>
+        {% endfor %}  
+        </form>   
+        total price: {{cart.totalprice}}
+        <form action="{% url 'shoppingcart' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" name="order" value="place order">
+        </form>
+    
+    </ul>
+    <h1>Hello, {{ user.first_name }}</h1>
+    <ul>
+        <li>Currently logged in as: {{ user.username }}</li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        <li><a href="{% url 'orders' %}">Go to orders</a></li>
+    </ul>
+    {% else %}
+    No items!
+    {% endif %}
+{% endblock %}

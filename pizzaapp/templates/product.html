@@ -1,0 +1,268 @@
+{% extends "template.html" %}
+{% block body %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+<h1>Hello, {{ user.first_name }}</h1>
+<ul>
+    <li>Currently logged in as: {{ user.username }}</li>
+    <li><a href="{% url 'logout' %}">Logout</a></li>
+</ul>
+
+
+{% if Product.type.name == "Pizza" %}
+<!-- order pizza-->
+<form action="{% url 'product' Product.type Product.name Product.size %}" method="post" id="orderform">
+    {% csrf_token %}
+    size:
+    {% for size in Sizes %}
+    {% if  Product.size == size %}
+    <input type="radio" id="id" name="size" value="{{ size }}" checked> {{ size }}
+    {% else %}
+    <input type="radio" id="id" name="size" value="{{ size }}"> {{ size }}
+    {% endif %}
+    {% endfor %}
+    <br>
+    base:
+    {% for Name in Names %}
+    {% if Name.type.name == "Pizza" %}
+    {% if  Product.name == Name %}
+    <input type="radio" id="id" name="name" value="{{ Name.name }}" checked> {{ Name }}
+    {% else %}
+    <input type="radio" id="id" name="name" value="{{ Name.name }}"> {{ Name }}
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    <br>
+    toppings (max 4):
+
+    {% for topping in Toppings %}
+    <input class="single-checkbox" id="id" type="checkbox" name="toppings" value="{{ topping }}"> {{ topping }} <br>
+    {% endfor %}
+    Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
+    <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
+
+    <input name="type" type="hidden" value="{{ Product.type }}">
+    <input type="submit" value="Add to Cart">
+
+</form>
+{% endif %}
+{% if Product.type.name == "Sub" %}
+<!-- order sub-->
+<form name="subform" action="{% url 'product' Product.type Product.name Product.size %}" method="post" id="orderform">
+    {% csrf_token %}
+    name:
+    <select id="selectmenu" class="selectmenu" name="name">
+        {% for Name in Names %}
+        {% if Name.type.name == "Sub" %}
+        {% if  Product.name == Name %}
+        <option value="{{ Name }}" selected>{{ Name }}</option>
+        {% else %}
+        <option value="{{ Name }}">{{ Name }}</option>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </select><br>
+    size:
+    {% for size in Sizes %}
+    {% if  Product.size == size %}
+    <input id="id" type="radio" name="size" value="{{ size }}" checked> {{ size }}
+    {% else %}
+    <input id="id" type="radio" name="size" value="{{ size }}"> {{ size }}
+    {% endif %}
+    {% endfor %}
+    <br>
+
+    toppings:
+    <!-- no objects yet!! do the same with linked lists-->
+    {% for topping in Toppings %}
+    {% if topping.type.name == "Sub" %}
+    <input class="single-checkbox" id="id" type="checkbox" name="toppings" value="{{ topping }}"> {{ topping }} (+
+    $0,50) <br>
+    {% endif %}
+    {% endfor %}
+
+    extra cheese:
+    <input class="single-checkbox" id="id" type="checkbox" name="extracheese" value=True> <br>
+    <input name="type" type="hidden" value="{{ Product.type }}">
+    Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
+    <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
+    <input type="submit" value="Add to Cart">
+</form>
+{% endif %}
+
+{% if Product.type.name == "Pasta" %}
+<!-- order pasta-->
+<form action="{% url 'product' Product.type Product.name Product.size %}" method="post" id="orderform">
+    {% csrf_token %}
+    name sdf:
+    <select id="selectmenu" name="name">
+        {% for Name in Names %}
+        {% if Name.type.name == "Pasta" %}
+        {% if Product.name == Name %}
+        <option value="{{ Name }}" selected> {{ Name }} </option>
+        {%else %}
+        <option value="{{ Name }}"> {{ Name }} </option>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </select><br>
+    <input name="type" type="hidden" value="{{ Product.type }}">
+    <input name="size" type="hidden" value="{{ Product.size }}">
+    Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
+    <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
+    <input type="submit" value="Add to Cart">
+</form>
+
+{% endif %}
+<!-- order salad-->
+{% if Product.type.name == "Salad" %}
+<form action="{% url 'product' Product.type Product.name Product.size %}" method="post" id="orderform">
+    {% csrf_token %}
+    name sdf:
+    <select id="selectmenu" class="selectmenu" name="name">
+        {% for Name in Names %}
+        {% if Name.type.name == "Salad" %}
+        {% if  Product.name == Name %}
+        <option value="{{ Name }}" selected>{{ Name }}</option>
+        {% else %}
+        <option value="{{ Name }}">{{ Name }}</option>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </select><br>
+    <input type="hidden" name="type" value="{{ Product.type }}">
+    <input name="size" type="hidden" value="{{ Product.size }}">
+    Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
+    <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
+    <input type="submit" value="Add to Cart">
+</form>
+{% endif %}
+<!-- order plate-->
+
+{% if Product.type.name == "Dinner Platter" %}
+<form action="{% url 'product' Product.type Product.name Product.size %}" method="post" id="orderform">
+    {% csrf_token %}
+    name:
+    <select id="selectmenu" class="selectmenu" name="name">
+        {% for Name in Names %}
+        {% if Name.type.name == "Dinner Platter" %}
+        {% if  Product.name == Name %}
+        <option value="{{ Name }}" selected>{{ Name }}</option>
+        {% else %}
+        <option value="{{ Name }}">{{ Name }}</option>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </select><br>
+    <input type="hidden" name="type" value="{{ Product.type }}">
+    size:
+    {% for size in Sizes %}
+    <input type="radio" name="size" value="{{ size }}" checked> {{ size }}
+    {% endfor %}
+    <br>
+    Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
+    <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
+
+    <input type="submit" value="Add to Cart">
+</form>
+{% endif %}
+<!-- twee vragen: waarom jquery en waarom pakt hij die twee erboven mee???-->
+<script>
+    var limit = 6;
+    $('input.single-checkbox').on('change', function (evt) {
+        if ($(this).siblings(':checked').length >= limit) {
+            this.checked = false;
+        }
+    });
+</script>
+
+<script>
+    // add event listener for form events
+    // (helaas lukte het niet om deze bij tag te noemen?)
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('input, select').forEach(function (input) {  // here 1111111111111111111
+            input.onclick = getPrice;
+        });
+    });
+
+    //create menu object in js
+    const items = [
+        {% for item in Items %}
+    {
+        type: "{{item.type}}",
+            name: "{{item.name}}",
+                size: "{{item.size}}",
+                    no_toppings: "{{item.no_toppings}}",
+                        price: "{{item.baseprice}}",
+    },
+    {% endfor %}
+    ]
+
+    // returns the price of the current product
+    // array js mn
+    function getPrice() {
+        // get form data
+        var orderform = document.forms["orderform"];
+        var selectedtype = String(orderform.elements["type"].value);
+
+
+        var selectedsize = String(orderform.elements["size"].value);
+        var selectedname = String(orderform.elements["name"].value);
+
+        if (selectedtype != "Pizza") {
+            var x = document.getElementById("selectmenu"); //here 111111111111111111
+            x.options[x.selectedIndex].value;
+            var selectednamedropmenu = x.value
+            //alert(selectednamedropmenu)
+        }
+        // find the number of boxes checked 
+        var inputElems = document.getElementsByTagName("input"),  // here 1111111111111111111
+            count = 0;
+        for (var i = 0; i < inputElems.length; i++) {
+
+            if (inputElems[i].type === "checkbox" && inputElems[i].checked === true) {
+                count++;
+            }
+        }
+        if (selectedtype === "Pizza") {
+
+            // loop over items to find base price (check pizza or other item for count variable!!)
+            var itemfound = items.find(item => {
+                if (selectedname === item.name && selectedsize === item.size && item.no_toppings == count) return true;
+            })
+        }
+        else {
+            // loop over items to find base price (check pizza or other item for count variable!!)
+            var itemfound = items.find(item => {
+                if (selectedname === item.name && selectedsize === item.size) return true;
+            })
+        }
+
+
+        var baseprice = parseFloat(itemfound.price);
+        //alert(baseprice)
+        var amount = orderform.elements["amount"].value;
+
+        // add topping price for non pizza item
+        if (selectedtype != "Pizza") {
+
+            baseprice += count * 0.5
+            //alert(baseprice)
+        }
+        // cheese
+        if (orderform.elements["extracheese"] == true) {
+            baseprice += 0.5
+        }
+        // final price
+        baseprice = baseprice * amount;
+
+        // insert result into form
+        document.querySelector('#totalPrice').innerHTML = "Total Price $" + baseprice;
+    }
+
+</script>
+
+
+<a href="{% url 'shoppingcart' %}">shopping cart</a></li>
+{% endblock %}
