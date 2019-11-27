@@ -69,67 +69,6 @@
         <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
 
-    <!-- order-->
-    <form action="{% url 'index' %}" method="post">
-        {% csrf_token %}
-        size:
-        {% for size in Sizes %}
-        <input type="radio" name="size" value="{{ size }}" checked> {{ size }}
-        {% endfor %}
-        <br>
-        base:
-        {% for Name in Names %}
-        {% if Name.name == 'Regular' or Name.name == 'Italian' %}
-        <input type="radio" name="base" value="{{ base }}" checked> {{ Name }}
-        {% endif %}
-        {% endfor %}
-        <br>
-        toppings (max 4):
-
-        {% for topping in Toppings %}
-        <input class="single-checkbox" type="checkbox" name="toppings" value="{{ topping }}"> {{ topping }} <br>
-        {% endfor %}
-
-        <input type="submit" value="add to shopping cart">
-    </form>
-
-    <form action="{% url 'index' %}" method="post">
-        {% csrf_token %}
-        Type:
-        <select id="subtype">
-            {% for item in Items %}
-            {% if item.type.name == 'sub' %}
-            <option value="{{ item.type }}">{{ item.name }}</option>
-            {% endif %}
-            {% endfor %}
-        </select>
-
-        <br>
-        base:
-        {% for Name in Names %}
-        {% if Name.name == 'Regular' or Name.name == 'Italian' %}
-        <input type="radio" name="base" value="{{ base }}" checked> {{ Name }}
-        {% endif %}
-        {% endfor %}
-        <br>
-        toppings (max 4):
-
-        {% for topping in Toppings %}
-        <input class="single-checkbox" type="checkbox" name="toppings" value="{{ topping }}"> {{ topping }} <br>
-        {% endfor %}
-
-        <input type="submit" value="add to shopping cart">
-    </form>
-    <!-- twee vragen: waarom jquery en waarom pakt hij die twee erboven mee???-->
-    <script>
-        var limit = 6;
-        $('input.single-checkbox').on('change', function (evt) {
-            if ($(this).siblings(':checked').length >= limit) {
-                this.checked = false;
-            }
-        });
-    </script>
-
-    <a href="{% url 'shoppingcart' %}">shopping cart</a></li>
+   
 
 {% endblock %}

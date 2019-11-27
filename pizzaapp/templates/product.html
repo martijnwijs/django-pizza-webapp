@@ -1,9 +1,7 @@
 {% extends "template.html" %}
 {% block body %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<ul>
-    <li>{{ Product }} </li>
-</ul>
+
 
 <h1>Hello, {{ user.first_name }}</h1>
 <ul>
@@ -169,13 +167,21 @@
     <input type="submit" value="Add to Cart">
 </form>
 {% endif %}
-
+<!-- twee vragen: waarom jquery en waarom pakt hij die twee erboven mee???-->
+<script>
+    var limit = 6;
+    $('input.single-checkbox').on('change', function (evt) {
+        if ($(this).siblings(':checked').length >= limit) {
+            this.checked = false;
+        }
+    });
+</script>
 
 <script>
     // add event listener for form events
     // (helaas lukte het niet om deze bij tag te noemen?)
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('#id').forEach(function (input) {
+        document.querySelectorAll('input, select').forEach(function (input) {  // here 1111111111111111111
             input.onclick = getPrice;
         });
     });
@@ -200,22 +206,18 @@
         var orderform = document.forms["orderform"];
         var selectedtype = String(orderform.elements["type"].value);
 
-        if (selectedtype === "Pizza" || selectedtype === "Sub") {
-            var selectedsize = String(orderform.elements["size"].value);
-        }
-        else {
-            var selectedsize = "None"
 
-        }
+        var selectedsize = String(orderform.elements["size"].value);
         var selectedname = String(orderform.elements["name"].value);
+
         if (selectedtype != "Pizza") {
-            var x = document.getElementByID("selectmenu");
+            var x = document.getElementById("selectmenu"); //here 111111111111111111
             x.options[x.selectedIndex].value;
             var selectednamedropmenu = x.value
-            alert(selectednamedropmenu)
+            //alert(selectednamedropmenu)
         }
         // find the number of boxes checked 
-        var inputElems = document.getElementsByTagName("input"),
+        var inputElems = document.getElementsByTagName("input"),  // here 1111111111111111111
             count = 0;
         for (var i = 0; i < inputElems.length; i++) {
 
@@ -230,33 +232,26 @@
                 if (selectedname === item.name && selectedsize === item.size && item.no_toppings == count) return true;
             })
         }
-        if (selectedtype === "Sub" || selectedtype === "Dinner Platter") {
-
+        else {
             // loop over items to find base price (check pizza or other item for count variable!!)
             var itemfound = items.find(item => {
                 if (selectedname === item.name && selectedsize === item.size) return true;
             })
         }
-        // non pizza item, no toppings in calculation
-        else {
 
-            var itemfound = items.find(item => {
-                if (selectednamedropmenu === item.name) return true;
-            })
-        }
 
         var baseprice = parseFloat(itemfound.price);
-        alert(baseprice)
+        //alert(baseprice)
         var amount = orderform.elements["amount"].value;
 
         // add topping price for non pizza item
         if (selectedtype != "Pizza") {
 
             baseprice += count * 0.5
-
+            //alert(baseprice)
         }
         // cheese
-        if (orderform.elements["extracheese"]) {
+        if (orderform.elements["extracheese"] == true) {
             baseprice += 0.5
         }
         // final price
@@ -267,15 +262,7 @@
     }
 
 </script>
-<!-- twee vragen: waarom jquery en waarom pakt hij die twee erboven mee???-->
-<script>
-    var limit = 6;
-    $('input.single-checkbox').on('change', function (evt) {
-        if ($(this).siblings(':checked').length >= limit) {
-            this.checked = false;
-        }
-    });
-</script>
+
 
 <a href="{% url 'shoppingcart' %}">shopping cart</a></li>
 {% endblock %}
