@@ -21,7 +21,7 @@ def orders(request):
     #check if logged in and admin 
     if not request.user.is_authenticated or not request.user.is_superuser:
         return render(request, "login.html", {"message": None})
-  
+    print(Order.objects.all())
 
     context = {"orders": Order.objects.all(),
                 "items": Item.objects.all()
