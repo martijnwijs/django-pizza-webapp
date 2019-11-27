@@ -3,11 +3,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 #http
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
 from django.shortcuts import render
 from .models import *
 
+from django.forms.models import model_to_dict
+import json
+from django.core import serializers
+import sys
+sys.setrecursionlimit(1500)
 
 #adapted usercreationform
 from pizzaapp.forms import SignUpForm
@@ -16,24 +21,31 @@ def orders(request):
     #check if logged in 
     if not request.user.is_authenticated:
         return render(request, "login.html", {"message": None})
+  
 
-
-    context2 = {"items": Order.objects.all()}
-    return render(request, "orders.html", context2)
+    context = {"orders": Order.objects.all(),
+                "items": Item.objects.all()
+            }
+                    
+    return render(request, "orders.html", context)
 
 def product(request, type, name, size):
     if request.method == 'GET':
         try: 
-            nameh = Name.objects.get(name=type)
-            typeh = Type.objects.get(name=name)
-            sizeh = Size.objects.get(name=size)
+            nameh = Name.objects.get(name=name)
+            typeh = Type.objects.get(name=type)
 
-            product = Menu.objects.filter(type=typeh, name=nameh, size=sizeh).first()
+            if size == 'None':
+                product = Menu.objects.filter(type=typeh, name=nameh).first()
+
+            else:
+                sizeh = Size.objects.get(name=size)
+                product = Menu.objects.filter(type=typeh, name=nameh, size=sizeh).first()
             
             print(str(type))
         except Menu.DoesNotExist:
             raise Http404("product not available")
-      
+
         context = { "Types": Type.objects.all(),
             "Product": product,
             "Items": Menu.objects.all(),
@@ -44,41 +56,52 @@ def product(request, type, name, size):
         return render(request, "product.html", context)
 
     if request.method == 'POST':
+        
         #retrieve data 
         type = Type.objects.get(name=request.POST["type"])
         name = Name.objects.get(name=request.POST["name"])
-        size = Size.objects.get(name=request.POST["size"])
+        if not request.POST.get("size"):
+            size = None
+        else:
+            size = Size.objects.get(name=request.POST["size"])
         extracheese = request.POST.get("extracheese", False)
-        
+        amount = int(request.POST.get("amount"))
+        print(amount)
         # topping as a list
         toppings = request.POST.getlist("toppings")
-
-       
-         
         
         # new item object
         item = Item()
+        
         #item.type = Type.objects.get(name=base)
         item.size = size
-        
-        # if pizza add no of toppings for pricecheck, otherwise not
+        item.type = type
+        item.name = name
+
+        # if pizza add number of toppings for pricecheck, otherwise not
         if type.name == "Pizza":
-            pricecheck = Menu.objects.get(size=size, type=type, no_toppings=len(toppings))
-            item.price = 0
+            pricecheck = Menu.objects.get(size=size, type=type, name=name, no_toppings=len(toppings))
+        
+            item.price = pricecheck.baseprice
+            
         else:
-            pricecheck = Menu.objects.get(size=size, type=type)
-            item.price = len(toppings) * 0,5
-        item.price += pricecheck.price
+            pricecheck = Menu.objects.get(size=size, type=type, name=name)
+            item.price = pricecheck.baseprice
+            item.price += len(toppings) * 0.5
+        #item.price += pricecheck.price
         # now add the cheese
         if extracheese:
-            item.price += 0,5
+            item.price += 0.5
+            item.extracheese = True
 
-        
+        print(item.price)
         #pizza.price = pricecheck.price 
     # plus message
         #backend price check
         #################### use try exept to catch up otherbugs
         #first save to add toppings
+        item.price = item.price * amount ################################
+        print(item.price)
         item.save()
         for topping in toppings:
             item.toppings.add(Toppings.objects.get(name=topping))
@@ -90,11 +113,13 @@ def product(request, type, name, size):
         #get users shop cart  + !!!!error handling!!!
         shop_cart = Shop_cart.objects.get(user=request.user)
         
-        #add the pizza items
+        #add the pizza items to shoppingcart
         shop_cart.items.add(item)
+        shop_cart.totalprice += item.price
+        print(shop_cart.totalprice)
         shop_cart.save()
         
-        return HttpResponseRedirect(reverse("failure"))
+        return HttpResponseRedirect(reverse("shoppingcart"))
          
 # function name to be found in urls.py, 
 #httpresponseredirect(reverse) is a way to redirect to another adres
@@ -113,9 +138,16 @@ def shoppingcart(request):
         #for seg in cart.items_pizza.all():
             #items.append(seg)
         #context = {"items": items}
-        context2 = {"items": cart.items.all()}
+
+        # calculate total price
+        #totalprice = 0
+        #for item in cart.items:
+        
+        context2 = {"items": cart.items.all(),
+                    "cart": cart}
         return render(request, "shoppingcart.html", context2)
     # place order and delete content
+
     if request.method == 'POST':
 
         #get cart object
@@ -124,26 +156,30 @@ def shoppingcart(request):
         if 'order' in request.POST:
         #create new order object
             order = Order()
-        # add cart to order and save order
+        # add cart and user data to order and save 
             order.user = request.user
+            order.totalprice = cart.totalprice
             order.save()
 
-        # add items to order and delete them from cart
-        for seg in cart.items_pizza.all():
+        # add order to items
+        for item in cart.items.all():
 
             # if user removed a item
-            if str(seg) in request.POST:
-                print("seg")
-                seg.delete()
+            if str(item) in request.POST:
+                
+                item.delete()
+                # decrease amount
+                cart.totalprice -= item.price
                 cart.save()
             
             # if user presses the place order buttom
             if 'order' in request.POST:
-                print("add to  order")
-                order.items.add(seg)
-                seg.delete()
-                order.save()
+                print("add to order")
+                item.order = order
+                cart.items.remove(item)
+                cart.totalprice = 0
                 cart.save()
+                item.save()
 
         return HttpResponseRedirect(reverse("shoppingcart"))
 

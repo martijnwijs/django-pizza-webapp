@@ -8,10 +8,20 @@
 
 <body>
     <ul>
-        {% for item in Items %}
+        {% for order in orders %}
             <li>
-            {{ item.user }} <br>
+            name: {{ order.user }}  <br>
+            total price:  {{order.totalprice}}
+            Items:
             </li>
+            <li>
+            {% for item in items  %}
+            {% if item.order == order %}
+            Type: {{item.type }} Name: {{ item.name}} Size: {{item.size }} Toppings: {{item.toppings}} Amount: {{item.amount}} price: {{item.price}}
+
+            {% endif %}
+            {% endfor %}
+        </li>
         {% endfor %}  
     </ul>
 

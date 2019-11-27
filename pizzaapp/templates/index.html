@@ -8,32 +8,17 @@
 
 <body>
 
-
-        <h1>Pizza</h1>
-    <table>
-        <tr>
-            <th>type</th>
-            <th>Small</th>
-            <th>Large</th>
-        </tr>
+    <ul>
+        <li>
+            <h1>Pizza</h1>
+        </li>
         {% for item in Items  %}
-        {% if item.type.name == "Pizza" %} 
-        <tr>
-        {% if item.size.name == "Small" %}
-        
-        <td>{{ item.name.name }} </td>
-        
-        <td> <a href="{% url 'product' item.type item.name item.size %}"> {{item.price}} </a> </td>
+        {% if item.type.name == "Pizza" %}
+        <li> <a href="{% url 'product' item.type item.name item.size %}">Base: {{ item.name }} Size: {{ item.size }} Toppings:{{ item.no_toppings}} Price:{{ item.baseprice }}</a></li>
         {% endif %}
-        {%if item.size.name == "Large" %}
-        <td> <a href="{% url 'product' item.type item.name item.size %}">{{item.price}}}</a> </td>
-        </tr>
-        {% endif %}
-        
-        {% endif %}
-    
         {% endfor %}
-    </table>
+    </ul>
+
 
     <ul>
         <li>
@@ -41,7 +26,7 @@
         </li>
         {% for item in Items  %}
         {% if item.type.name == "Sub" %}
-        <li> <a href="{% url 'product' item.type item.name item.size %}">{{ item.type }} {{ item.size }}</a></li>
+        <li> <a href="{% url 'product' item.type item.name item.size %}">{{ item.name }} {{ item.size }} {{ item.baseprice }} </a></li>
         {% endif %}
         {% endfor %}
     </ul>
@@ -52,7 +37,7 @@
         </li>
         {% for item in Items  %}
         {% if item.type.name == "Pasta" %}
-        <li> <a href="{% url 'product' item.type item.name None %}">{{ item.type }} {{ item.size }}</a></li>
+        <li> <a href="{% url 'product' item.type item.name None %}">{{ item.name }} price: {{item.baseprice}} </a></li>
         {% endif %}
         {% endfor %}
     </ul>
@@ -62,7 +47,7 @@
         </li>
         {% for item in Items  %}
         {% if item.type.name == "Salad" %}
-        <li> {{item.name }} {{ item.size }}</li>
+        
         {% endif %}
         {% endfor %}
     </ul>
@@ -72,7 +57,7 @@
         </li>
         {% for item in Items  %}
         {% if item.type.name == "Dinner Platter" %}
-        <li> {{item.name }} {{ item.size }}</li>
+        <li> <a href="{% url 'product' item.type item.name None %}">{{ item.name }} price: {{item.baseprice}} </a></li>
         {% endif %}
         {% endfor %}
     </ul>
@@ -110,12 +95,12 @@
     <form action="{% url 'index' %}" method="post">
         {% csrf_token %}
         Type:
-        <select id = "subtype">
-        {% for item in Items %}
-        {% if item.type.name == 'sub' %}
-        <option value = "{{ item.type }}">{{ item.name }}</option>
-        {% endif %}
-        {% endfor %}
+        <select id="subtype">
+            {% for item in Items %}
+            {% if item.type.name == 'sub' %}
+            <option value="{{ item.type }}">{{ item.name }}</option>
+            {% endif %}
+            {% endfor %}
         </select>
 
         <br>

@@ -53,7 +53,7 @@
     <form name="subform" action="{% url 'product' Product.type Product.name Product.size %}" method="post" id="orderform">
         {% csrf_token %}
         name:
-        <select id="selectmenu" name="name">
+        <select id="selectmenu" class="selectmenu" name="name">
             {% for Name in Names %}
             {% if Name.type.name == "Sub" %}
             {% if  Product.name == Name %}
@@ -96,15 +96,21 @@
     <form action="{% url 'product' Product.type Product.name Product.size %}" method="post" id="orderform">
         {% csrf_token %}
         name sdf:
-        <select name="name">
+        <select id="selectmenu"  name="name">
             {% for Name in Names %}
             {% if Name.type.name == "Pasta" %}
-
+            {% if Product.name == Name %}
             <option value="{{ Name }}" selected>{{ Name }} </option>
+            {%else %}
+            <option value="{{ Name }}" >{{ Name }} </option>
+            {% endif %}
             {% endif %}
             {% endfor %}
         </select><br>
-        <input name="type" type="submit" value="{{ Product.type }}">
+        <input name="type" type="hidden" value="{{ Product.type }}">
+        Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
+        <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
+        <input type="submit" value="Add to Cart">
     </form>
 
     {% endif %}
@@ -174,13 +180,21 @@
     {
         // get form data
         var orderform = document.forms["orderform"];
-        var selectedsize = String(orderform.elements["size"].value);
         var selectedtype = String(orderform.elements["type"].value);
+
+        if (selectedtype === "Pizza" || selectedtype ==="Sub"){
+            var selectedsize = String(orderform.elements["size"].value);
+        }
+        else {
+            var selectedsize = "None"
+            
+        }
         var selectedname = String(orderform.elements["name"].value);
         if (selectedtype != "Pizza"){
-            var x = document.getElementById("selectmenu");
+            var x = document.getElementByID("selectmenu");
             x.options[x.selectedIndex].value;
-            selectednamedropmenu = x.value
+            var selectednamedropmenu = x.value
+            alert(selectednamedropmenu)
         }
         // find the number of boxes checked 
         var inputElems = document.getElementsByTagName("input"),
@@ -198,15 +212,23 @@
                 if (selectedname ===item.name && selectedsize === item.size && item.no_toppings == count) return true;
             })
         }
+        if (selectedtype === "Sub" || selectedtype === "Dinner Platter"){
+
+        // loop over items to find base price (check pizza or other item for count variable!!)
+        var itemfound = items.find(item => {
+            if (selectedname ===item.name && selectedsize === item.size ) return true;
+            })
+        }
         // non pizza item, no toppings in calculation
         else {
             
             var itemfound = items.find(item => {
-                if (selectednamedropmenu ===item.name && selectedsize === item.size) return true;
+                if (selectednamedropmenu === item.name) return true;
             })
         }
 
         var baseprice = parseFloat(itemfound.price);
+        alert(baseprice)
         var amount = orderform.elements["amount"].value;
         
         // add topping price for non pizza item
