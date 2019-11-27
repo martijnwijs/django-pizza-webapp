@@ -66,6 +66,7 @@ def product(request, type, name, size):
         size = Size.objects.filter(name=request.POST["size"]).first()
         extracheese = request.POST.get("extracheese", False)
         amount = int(request.POST.get("amount"))
+        print("amount")
         print(amount)
         # topping as a list
         toppings = request.POST.getlist("toppings")
@@ -93,7 +94,7 @@ def product(request, type, name, size):
         if extracheese:
             item.price += 0.5
             item.extracheese = True
-
+        print("itemprice")
         print(item.price)
         #pizza.price = pricecheck.price 
     # plus message
@@ -101,8 +102,10 @@ def product(request, type, name, size):
         #################### use try exept to catch up otherbugs
         #first save to add toppings
         item.price = item.price * amount ################################
+        item.amount = amount
         #round
         item.price =  round(item.price, 2)
+        print(item.price)
         item.save()
         for topping in toppings:
             item.toppings.add(Toppings.objects.get(name=topping))

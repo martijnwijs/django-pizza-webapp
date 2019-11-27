@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title> hello!</title>
-  {% load static %} 
-  <link href="{% static '/pizzaapp/js/pricecalculation.js' %}">
-  
+    <title> hello!</title>
+    {% load static %}
+    <link href="{% static '/pizzaapp/js/pricecalculation.js' %}">
+
 
 </head>
+
 <body>
-{% block body %} {% endblock %}
+    <div class="topnav">
+       
+        <a href="{% url 'index'%}">Go to Menu</a>
+        <a href="{% url 'shoppingcart'%}">Go to Shopping Cart</a>
+       
+    </div>
+    {% block body %} {% endblock %}
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 {% extends "template.html" %}
 {% block body %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <ul>
     <li>{{ Product }} </li>
 </ul>
@@ -109,7 +110,7 @@
         {% endfor %}
     </select><br>
     <input name="type" type="hidden" value="{{ Product.type }}">
-    
+    <input name="size" type="hidden" value="{{ Product.size }}">
     Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
     <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
     <input type="submit" value="Add to Cart">
@@ -123,7 +124,7 @@
     name sdf:
     <select id="selectmenu" class="selectmenu" name="name">
         {% for Name in Names %}
-        {% if Name.type.name == "Dinner Platter" %}
+        {% if Name.type.name == "Salad" %}
         {% if  Product.name == Name %}
         <option value="{{ Name }}" selected>{{ Name }}</option>
         {% else %}
@@ -266,4 +267,15 @@
     }
 
 </script>
+<!-- twee vragen: waarom jquery en waarom pakt hij die twee erboven mee???-->
+<script>
+    var limit = 6;
+    $('input.single-checkbox').on('change', function (evt) {
+        if ($(this).siblings(':checked').length >= limit) {
+            this.checked = false;
+        }
+    });
+</script>
+
+<a href="{% url 'shoppingcart' %}">shopping cart</a></li>
 {% endblock %}

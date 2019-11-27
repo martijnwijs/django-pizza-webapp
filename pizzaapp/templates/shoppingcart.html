@@ -1,12 +1,5 @@
-<html>
-
-<head>
-    <title>yo</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-</head>
-
-
-<body>
+{% extends "template.html" %}
+{% block body %}
     {% if items.count != 0 %}
     <ul>
         {% for item in items%}
@@ -31,8 +24,6 @@
         <li><a href="{% url 'orders' %}">Go to orders</a></li>
     </ul>
     {% else %}
-    No items
+    No items!
     {% endif %}
-</body>
-
-</html>
+{% endblock %}

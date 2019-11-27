@@ -1,30 +1,26 @@
-<html>
-
-<head>
-    <title>yo</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-</head>
-
-
-<body>
+{% extends "template.html" %}
+{% block body %}
     <ul>
-            {% for order in orders %}
-            <li>
-            name: {{ order.user }}  <br>
-            total price:  {{order.totalprice}}
-            Items:
-            </li>
-            <li>
+        {% for order in orders %}
+        <li>
+            name: {{ order.user }} <br>
+            total price: {{order.totalprice}}<br>
+            Items:<br>
+        
+        
             {% for item in items  %}
             {% if item.order == order %}
-            Type: {{item.type }} Name: {{ item.name}} Size: {{item.size }} Toppings: {{item.toppings}} Amount: {{item.amount}} price: {{item.price}}
+            Type: {{item.type }} Name: {{ item.name}} Size: {{item.size }} {% if item.toppings.count != 0 %} Toppings: {{item.toppings}} {% endif %} Amount:
+            {{item.amount}} price: {{item.price}}<br>
 
             {% endif %}
             {% endfor %}
-            
+
         </li>
-        {% endfor %}  
-       
+        <br>
+        <br>
+        {% endfor %}
+
     </ul>
 
     <h1>Hello, {{ user.first_name }}</h1>
@@ -33,6 +29,4 @@
         <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
 
-</body>
-
-</html>
+    {% endblock %}
