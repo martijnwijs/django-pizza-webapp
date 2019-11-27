@@ -18,8 +18,8 @@ sys.setrecursionlimit(1500)
 from pizzaapp.forms import SignUpForm
 
 def orders(request):
-    #check if logged in 
-    if not request.user.is_authenticated:
+    #check if logged in and admin 
+    if not request.user.is_authenticated or not request.user.is_superuser:
         return render(request, "login.html", {"message": None})
   
 
@@ -60,10 +60,10 @@ def product(request, type, name, size):
         #retrieve data 
         type = Type.objects.get(name=request.POST["type"])
         name = Name.objects.get(name=request.POST["name"])
-        if not request.POST.get("size"):
-            size = None
-        else:
-            size = Size.objects.get(name=request.POST["size"])
+        #if not request.POST.get("size"):
+            #size = None
+        #else:
+        size = Size.objects.filter(name=request.POST["size"]).first()
         extracheese = request.POST.get("extracheese", False)
         amount = int(request.POST.get("amount"))
         print(amount)
@@ -101,7 +101,8 @@ def product(request, type, name, size):
         #################### use try exept to catch up otherbugs
         #first save to add toppings
         item.price = item.price * amount ################################
-        print(item.price)
+        #round
+        item.price =  round(item.price, 2)
         item.save()
         for topping in toppings:
             item.toppings.add(Toppings.objects.get(name=topping))
@@ -116,7 +117,7 @@ def product(request, type, name, size):
         #add the pizza items to shoppingcart
         shop_cart.items.add(item)
         shop_cart.totalprice += item.price
-        print(shop_cart.totalprice)
+        shop_cart.totalprice = round(shop_cart.totalprice, 2)
         shop_cart.save()
         
         return HttpResponseRedirect(reverse("shoppingcart"))
@@ -152,13 +153,13 @@ def shoppingcart(request):
 
         #get cart object
         cart = Shop_cart.objects.get(user=request.user)
-
-        if 'order' in request.POST:
+        
+        if 'order' in request.POST and cart.items != None:
         #create new order object
             order = Order()
         # add cart and user data to order and save 
             order.user = request.user
-            order.totalprice = cart.totalprice
+            order.totalprice = round(cart.totalprice, 2)
             order.save()
 
         # add order to items
@@ -171,9 +172,10 @@ def shoppingcart(request):
                 # decrease amount
                 cart.totalprice -= item.price
                 cart.save()
+                break
             
             # if user presses the place order buttom
-            if 'order' in request.POST:
+            if 'order' in request.POST and cart.items != None:
                 print("add to order")
                 item.order = order
                 cart.items.remove(item)

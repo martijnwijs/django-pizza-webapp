@@ -7,6 +7,7 @@
 
 
 <body>
+    {% if items.count != 0 %}
     <ul>
         {% for item in items%}
         <form action="{% url 'shoppingcart' %}" method="post">
@@ -21,7 +22,7 @@
                 {% csrf_token %}
                 <input type="submit" name="order" value="place order">
         </form>
-
+    
     </ul>
     <h1>Hello, {{ user.first_name }}</h1>
     <ul>
@@ -29,7 +30,9 @@
         <li><a href="{% url 'logout' %}">Logout</a></li>
         <li><a href="{% url 'orders' %}">Go to orders</a></li>
     </ul>
-
+    {% else %}
+    No items
+    {% endif %}
 </body>
 
 </html>

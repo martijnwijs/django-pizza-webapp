@@ -8,7 +8,9 @@
 
 <body>
     <ul>
-        {% for order in orders %}
+        <form action="{% url 'orders' %}" method="post">
+            {% csrf_token %}
+        {% for order in Orders %}
             <li>
             name: {{ order.user }}  <br>
             total price:  {{order.totalprice}}
@@ -21,6 +23,7 @@
 
             {% endif %}
             {% endfor %}
+            <input type="submit" name = "{{ order }}" value="checked"> 
         </li>
         {% endfor %}  
     </ul>

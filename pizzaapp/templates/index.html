@@ -14,7 +14,8 @@
         </li>
         {% for item in Items  %}
         {% if item.type.name == "Pizza" %}
-        <li> <a href="{% url 'product' item.type item.name item.size %}">Base: {{ item.name }} Size: {{ item.size }} Toppings:{{ item.no_toppings}} Price:{{ item.baseprice }}</a></li>
+        <li> <a href="{% url 'product' item.type item.name item.size %}">Base: {{ item.name }} Size: {{ item.size }}
+                Toppings:{{ item.no_toppings}} Price:{{ item.baseprice }}</a></li>
         {% endif %}
         {% endfor %}
     </ul>
@@ -26,7 +27,8 @@
         </li>
         {% for item in Items  %}
         {% if item.type.name == "Sub" %}
-        <li> <a href="{% url 'product' item.type item.name item.size %}">{{ item.name }} {{ item.size }} {{ item.baseprice }} </a></li>
+        <li> <a href="{% url 'product' item.type item.name item.size %}">{{ item.name }} {{ item.size }}
+                {{ item.baseprice }} </a></li>
         {% endif %}
         {% endfor %}
     </ul>
@@ -37,7 +39,8 @@
         </li>
         {% for item in Items  %}
         {% if item.type.name == "Pasta" %}
-        <li> <a href="{% url 'product' item.type item.name None %}">{{ item.name }} price: {{item.baseprice}} </a></li>
+        <li> <a href="{% url 'product' item.type item.name item.size %}">{{ item.name }} price: {{item.baseprice}} </a>
+        </li>
         {% endif %}
         {% endfor %}
     </ul>
@@ -45,9 +48,13 @@
         <li>
             <h1>Salads</h1>
         </li>
+        </li>
         {% for item in Items  %}
         {% if item.type.name == "Salad" %}
-        
+        {{ item.name.name }} {{ item.type.name}} {{ item.size.name}}
+        {{ item.name }} {{ item.type}} {{ item.size}}
+        <li> <a href="{% url 'product' item.type item.name item.size %}">{{ item.name }} price: {{item.baseprice}} </a>
+        </li>
         {% endif %}
         {% endfor %}
     </ul>
@@ -57,7 +64,10 @@
         </li>
         {% for item in Items  %}
         {% if item.type.name == "Dinner Platter" %}
-        <li> <a href="{% url 'product' item.type item.name None %}">{{ item.name }} price: {{item.baseprice}} </a></li>
+        {{ item.name.name }} {{ item.type.name}} {{ item.size.name}}
+        {{ item.name }} {{ item.type}} {{ item.size}}
+        <li> <a href="{% url 'product' item.type item.name item.size %}">{{ item.name }} price: {{item.baseprice}} </a>
+        </li>
         {% endif %}
         {% endfor %}
     </ul>
