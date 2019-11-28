@@ -16,7 +16,7 @@ def orders(request):
     #check if logged in as admin 
     if not request.user.is_authenticated or not request.user.is_superuser:
         return render(request, "login.html", {"message": None})
-    print(Order.objects.all())
+    
 
     context = {"orders": Order.objects.all(),
                 "items": Item.objects.all()
@@ -43,8 +43,6 @@ def product(request, type, name, size):
                 sizeh = Size.objects.get(name=size)
                 product = Menu.objects.filter(type=typeh, name=nameh, size=sizeh).first()
             
-            print(str(type))
-
         except Menu.DoesNotExist:
             raise Http404("product not available")
 
@@ -162,12 +160,12 @@ def shoppingcart(request):
             
             # if user presses the place order buttom
             if 'order' in request.POST and cart.items != None:
-                print("add to order")
                 item.order = order
                 cart.items.remove(item)
                 cart.totalprice = 0
                 cart.save()
                 item.save()
+                return HttpResponseRedirect(reverse("orderplaced"))
 
         return HttpResponseRedirect(reverse("shoppingcart"))
 
@@ -237,3 +235,6 @@ def register_view(request):
 
 def failure(request):
     return render(request, "failure.html")
+
+def orderplaced(request):
+    return render(request, "orderplaced.html")

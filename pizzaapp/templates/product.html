@@ -42,7 +42,7 @@
     <input class="single-checkbox" id="id" type="checkbox" name="toppings" value="{{ topping }}"> {{ topping }} <br>
     {% endfor %}
 
-    Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
+    Quantity: <input type="number" id="id" name="amount" min="1" max="50" value="1" >
     <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
     <input name="type" type="hidden" value="{{ Product.type }}">
     <input type="submit" value="Add to Cart">
@@ -90,7 +90,7 @@
     <input class="single-checkbox" id="id" type="checkbox" name="extracheese" value=True> <br>
     <input name="type" type="hidden" value="{{ Product.type }}">
 
-    Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
+    Quantity: <input type="number" id="id" name="amount" min="1" max="50" value="1">
     <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
     <input type="submit" value="Add to Cart">
 </form>
@@ -116,7 +116,7 @@
     <input name="type" type="hidden" value="{{ Product.type }}">
     <input name="size" type="hidden" value="{{ Product.size }}">
 
-    Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
+    Quantity: <input type="number" id="id" name="amount" min="1" max="50" value="1">
     <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
     <input type="submit" value="Add to Cart">
 </form>
@@ -141,7 +141,7 @@
     </select><br>
     <input type="hidden" name="type" value="{{ Product.type }}">
     <input name="size" type="hidden" value="{{ Product.size }}">
-    Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
+    Quantity: <input type="number" id="id" name="amount" min="1" max="50" value="1">
     <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
     <input type="submit" value="Add to Cart">
 </form>
@@ -176,7 +176,7 @@
     {% endfor %}
     <br>
 
-    Quantity: <input type="number" id="id" name="amount" min="0" max="50" value="1">
+    Quantity: <input type="number" id="id" name="amount" min="1" max="50" value="1">
     <div id="totalPrice"> Total Price ${{Product.baseprice}}</div>
 
     <input type="submit" value="Add to Cart">
@@ -275,7 +275,4 @@
     }
 
 </script>
-
-
-<a href="{% url 'shoppingcart' %}">shopping cart</a></li>
 {% endblock %}

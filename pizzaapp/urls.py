@@ -12,7 +12,6 @@ urlpatterns = [
     path("failure", views.failure, name = "failure"),
     path("shoppingcart", views.shoppingcart, name = "shoppingcart"),
     path("orders", views.orders, name = "orders"),
-    #path("<str:type>/<str:name>", views.product, name="product"),
-    path("<str:type>/<str:name>/<str:size>", views.product, name="product")
-    
+    path("<str:type>/<str:name>/<str:size>", views.product, name="product"),
+    path("orderplaced", views.orderplaced, name="orderplaced")
     ]

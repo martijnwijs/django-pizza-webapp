@@ -17,6 +17,7 @@
     <title> Pizza Restaurant</title>
     {% load static %} <!-- not working yet!-->
     <link href="{% static '/pizzaapp/js/pricecalculation.js' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pizzaapp/styles.css' %}">
 </head>
 
 <body>
@@ -34,11 +35,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'shoppingcart'%}">Go to shopping cart</a>
                 </li>
+                {% if request.user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'orders'%}">Go to orders</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </nav>
     {% block body %} {% endblock %}
 
 </body>
-
 </html>
