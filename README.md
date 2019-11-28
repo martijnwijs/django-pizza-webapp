@@ -13,14 +13,14 @@ Bij het toevoegen van een grote bestelling, nog 1 toevoegen, en vervlgens de gro
 
 ik heb een order in mijn cart, klik op place order en krijg vervolgens de melding dat ik niks in mijn mandje heb
 
-als ik al ingelogd ben kan ik bij de registreer pagina komen   ----------
+als ik al ingelogd ben kan ik bij de registreer pagina komen   
 
-Bug als je op een dinner platter klikt bijvoorbeeld de eerste: -------------------
+Bug als je op een dinner platter klikt bijvoorbeeld de eerste:
 prijs menu = 35 size =large
 naar de shoping cart wordt het dan opeens 60
 als je op dezelfde pagina van dinner platter de small selecteerd veranderd de prijs van 35.0 naar 35
 
-bovenin staat menu, maar je kunt er niet op klikken -------------------
+bovenin staat menu, maar je kunt er niet op klikken
 
 als ik een pizza selecteer
 met quantity -0 dan kan ik wel naar de shopping cart, dan komen deze producten ook echt in de shopping cart met prijs 0
