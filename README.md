@@ -2,26 +2,16 @@
 
 Web Programming with Python and JavaScript
 
-Kiara:
-design:
-Gebruikers informatie boven in menu pagina
-Link vanuit shopping cart naar orders, terwijl ik geen superuser ben, en er wordt daar opnieuw gevraagd om in te loggen
-Als ik opnieuw inlog kom ik op de menu agina, ook had ik de optie om via daar te registeren
+eerst kom je bij de login page, je kunt vanaf daar ook op register drukken. 
+alle andere pagina's zijn alleen toegankelijk wanneer je ingelogd bent.
+wanneer de gebruiker registreert wordt er automatisch een unieke shopping cart voor de gebruiker aangemaakt.
+vervolgens wordt de gebruiker naar het menu geleid.
 
-Bij het toevoegen van een grote bestelling, nog 1 toevoegen, en vervlgens de grote bestelling verwijderen, dan veranded het bedrag naar:
-13.70000000000045
+hier kan de gebruiker op de verschillende menu items drukken, waarna hij/ zij een keuze menu krijgt. 
+in het keuze menu zijn de specifieke opties horende bij het geklikte item al ingesteld, maar de gebruiker kan deze nog aanpassen.
+daarnaast kan de gebruiker aangeven hoeveel keer hij/zij het specifieke item wilt. De totale prijs wordt doormiddel van Javascript telkens opnieuw berekend, maar wordt daarnaast backend ook berekend. Wanneer de gebruiker op Add to Cart drukt wordt het product toegevoegd aan de winkelmand. 
 
-ik heb een order in mijn cart, klik op place order en krijg vervolgens de melding dat ik niks in mijn mandje heb
+in de winkelmand worden alle items weergegeven en de totale prijs. De gebruiker kan items verwijderen en een order plaatsen. 
+waneer de gebruiker een order plaats krijgt hij/zij een melding hiervan en kan hij/zij weer verder winkelen. 
 
-als ik al ingelogd ben kan ik bij de registreer pagina komen   
-
-Bug als je op een dinner platter klikt bijvoorbeeld de eerste:
-prijs menu = 35 size =large
-naar de shoping cart wordt het dan opeens 60
-als je op dezelfde pagina van dinner platter de small selecteerd veranderd de prijs van 35.0 naar 35
-
-bovenin staat menu, maar je kunt er niet op klikken
-
-als ik een pizza selecteer
-met quantity -0 dan kan ik wel naar de shopping cart, dan komen deze producten ook echt in de shopping cart met prijs 0
-als ik een quantity kies, kan ik die vervolgens nergens zien
+de pagina /orders is alleen toegankelijk voor een superuser. hier kunnen alle geplaatste orders bekeken worden. wanneer een superuser inlogt is deze link ook in de navigatiebar zichtbaar.
