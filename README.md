@@ -16,7 +16,7 @@ een order bestaat uit de inhoud vaan een winkelwagen en is definitief.
 
 __views.py__ regelt alle backend logica in de app. 
 
-__ de templates folder zijn de volgende html paginas te vinden:__
+__de templates folder zijn de volgende html paginas te vinden:__
 
 __login.html__ 
 __register.html__
