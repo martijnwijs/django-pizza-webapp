@@ -17,18 +17,19 @@ een order bestaat uit de inhoud vaan een winkelwagen en is definitief.
 __views.py__ regelt alle backend logica in de app. 
 
 __de templates folder zijn de volgende html paginas te vinden:__
-
-__login.html__ 
-__register.html__
-__failure.html__
-__index.html__ - geeft het menu van het restaurant weer
-__product.html__ - productpagina, geeft het product met dynamische prijscalculatie.In dezelfde pagina kan het product gecustomized worden (bijv andere toppings)
-__shoppingcart.html__ - geeft de winkelwagen van de gebruiker weer. items kunnen worden verwijderd en de totale prijs wordt weergegeven.
-__orderplaced.html__ - geeft bevestiging  aan de gebruiker dat de order is geplaatst
-__orders.html__ - alleen toegankelijk voor admin, geeft alle orders weer
-__template.html__ - de html template voor alle paginas
-
-__navigatie door app:__
+<br>
+<br>
+__login.html__ <br>
+__register.html__<br>
+__failure.html__<br>
+__index.html__ - geeft het menu van het restaurant weer<br>
+__product.html__ - productpagina, geeft het product met dynamische prijscalculatie.In dezelfde pagina kan het product gecustomized worden (bijv andere toppings)<br>
+__shoppingcart.html__ - geeft de winkelwagen van de gebruiker weer. items kunnen worden verwijderd en de totale prijs wordt weergegeven.<br>
+__orderplaced.html__ - geeft bevestiging  aan de gebruiker dat de order is geplaatst<br>
+__orders.html__ - alleen toegankelijk voor admin, geeft alle orders weer<br>
+__template.html__ - de html template voor alle paginas<br>
+<br><br>
+__navigatie door app:__<br><br>
 
 Wanneer de gebruiker naar de app navigeert komt hij/zij bij de login page, je kunt vanaf daar ook op register drukken. 
 alle andere pagina's zijn alleen toegankelijk wanneer je ingelogd bent.
